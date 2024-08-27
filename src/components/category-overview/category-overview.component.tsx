@@ -11,6 +11,7 @@ import {
 import Category from '../../types/category.types'
 
 // Components
+import ProductItem from '../product-item/product-item.component'
 interface CategoryOverviewProps {
   category: Category
 }
@@ -23,9 +24,9 @@ const CategoryOverview: FunctionComponent<CategoryOverviewProps> = ({
       <CategoryTitle>{category.displayName}</CategoryTitle>
 
       <ProductsContainer>
-        {/*  {category.products.slice(0, 4).map((product) => (
+        {category.products.slice(0, 4).map((product) => (
           <ProductItem key={product.id} product={product} />
-        ))} */}
+        ))}
       </ProductsContainer>
     </CategoryContainer>
   )

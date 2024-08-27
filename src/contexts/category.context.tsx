@@ -1,15 +1,15 @@
-import { createContext, FunctionComponent, useState } from 'react'
 import { collection, getDocs } from 'firebase/firestore'
+import { createContext, FunctionComponent, useState } from 'react'
 
 // Utilities
-import Category from '../types/category.types'
 import { db } from '../config/firebase.config'
 import { categoryConverter } from '../converters/firestore.converters'
+import Category from '../types/category.types'
 
 interface ICategoryContext {
   categories: Category[]
-  fetchCategories: () => Promise<void>
   isLoading: boolean
+  fetchCategories: () => Promise<void>
 }
 
 export const CategoryContext = createContext<ICategoryContext>({
@@ -25,6 +25,7 @@ const CategoryContextProvider: FunctionComponent = ({ children }) => {
   const fetchCategories = async () => {
     try {
       setIsLoading(true)
+
       const categoriesFromFirestore: Category[] = []
 
       const querySnapshot = await getDocs(
@@ -42,6 +43,7 @@ const CategoryContextProvider: FunctionComponent = ({ children }) => {
       setIsLoading(false)
     }
   }
+
   return (
     <CategoryContext.Provider
       value={{ categories, isLoading, fetchCategories }}>
