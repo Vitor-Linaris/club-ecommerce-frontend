@@ -7,7 +7,7 @@ import { auth } from '../../config/firebase.config'
 
 // Utilities
 import { CartContext } from '../../contexts/cart.context'
-import { logout } from '../../store/reducers/user/user.actions'
+import { logoutUser } from '../../store/reducers/user/user.actions'
 
 // Styles
 import {
@@ -45,7 +45,7 @@ const Header = () => {
   }
 
   const handleSignOutClick = () => {
-    dispatch(logout())
+    dispatch(logoutUser())
     signOut(auth)
   }
 
