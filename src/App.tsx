@@ -1,7 +1,8 @@
 import { onAuthStateChanged } from 'firebase/auth'
-import { FunctionComponent, useContext, useState } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { collection, getDocs, query, where } from 'firebase/firestore'
+import { useDispatch, useSelector } from 'react-redux'
 
 // Pages
 import HomePage from './pages/home/home.page'
@@ -13,7 +14,6 @@ import CheckoutPage from './pages/checkout/checkout.page'
 
 // Utilities
 import { auth, db } from './config/firebase.config'
-import { UserContext } from './contexts/user.context'
 import { userConverter } from './converters/firestore.converters'
 
 // Components
@@ -25,30 +25,40 @@ import PaymentConfirmation from './pages/payment-confirmation/payment-confirmati
 const App: FunctionComponent = () => {
   const [isInitializing, setIsInitializing] = useState(true)
 
-  const { isAuthenticated, loginUser, logoutUser } = useContext(UserContext)
-  onAuthStateChanged(auth, async (user) => {
-    const isSigningOut = isAuthenticated && !user
-    if (isSigningOut) {
-      logoutUser()
+  const dispatch = useDispatch()
 
-      return setIsInitializing(false)
-    }
+  const { isAuthenticated } = useSelector(
+    (rootReducer: any) => rootReducer.userReducer
+  )
 
-    const isSigningIn = !isAuthenticated && user
-    if (isSigningIn) {
-      const querySnapshot = await getDocs(
-        query(
-          collection(db, 'users').withConverter(userConverter),
-          where('id', '==', user.uid)
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      const isSigningOut = isAuthenticated && !user
+
+      if (isSigningOut) {
+        dispatch({ type: 'LOGOUT_USER' })
+
+        return setIsInitializing(false)
+      }
+
+      const isSigningIn = !isAuthenticated && user
+      if (isSigningIn) {
+        const querySnapshot = await getDocs(
+          query(
+            collection(db, 'users').withConverter(userConverter),
+            where('id', '==', user.uid)
+          )
         )
-      )
-      const usersFromFirestore = querySnapshot.docs[0]?.data()
-      loginUser(usersFromFirestore)
-      return setIsInitializing(false)
-    }
+        const usersFromFirestore = querySnapshot.docs[0]?.data()
 
-    return setIsInitializing(false)
-  })
+        dispatch({ type: 'LOGIN_USER', payload: usersFromFirestore })
+
+        return setIsInitializing(false)
+      }
+
+      return setIsInitializing(false)
+    })
+  }, [dispatch])
 
   if (isInitializing) return <Loading />
 
