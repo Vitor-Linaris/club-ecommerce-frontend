@@ -3,6 +3,7 @@ import { BsCartPlus } from 'react-icons/bs'
 
 // Components
 import CustomButton from '../custom-button/custom-button.component'
+import { useDispatch } from 'react-redux'
 
 // Styles
 import {
@@ -13,8 +14,7 @@ import {
 
 // Utilities
 import Product from '../../types/product.types'
-import { useDispatch } from 'react-redux'
-import { addProductToCart } from '../../store/reducers/cart/cart.actions'
+import { addProductToCart } from '../../store/toolkit/cart/cart.slice'
 
 interface ProductItemProps {
   product: Product

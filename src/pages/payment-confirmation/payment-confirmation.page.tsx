@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux'
 // Components
 import Header from '../../components/header/header.component'
 import CustomButton from '../../components/custom-button/custom-button.component'
-import { clearCartProducts } from '../../store/reducers/cart/cart.actions'
+import { clearCartProducts } from '../../store/toolkit/cart/cart.slice'
 
 // Styles
 import {

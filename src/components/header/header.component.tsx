@@ -1,14 +1,14 @@
-import { BsCart3 } from 'react-icons/bs'
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { signOut } from 'firebase/auth'
-import { auth } from '../../config/firebase.config'
+import { BsCart3 } from 'react-icons/bs'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 // Utilities
+import { auth } from '../../config/firebase.config'
 import { logoutUser } from '../../store/reducers/user/user.actions'
-import { toggleCart } from '../../store/reducers/cart/cart.actions'
-import { selectProductsCount } from '../../store/reducers/cart/cart.selectors'
 import { useAppSelector } from '../../hooks/redux.hooks'
+import { toggleCart } from '../../store/toolkit/cart/cart.slice'
+import { selectProductsCount } from '../../store/reducers/cart/cart.selectors'
 
 // Styles
 import {
@@ -70,6 +70,7 @@ const Header = () => {
         {isAuthenticated && (
           <HeaderItem onClick={handleSignOutClick}>Sair</HeaderItem>
         )}
+
         <HeaderItem onClick={handleCartClick}>
           <BsCart3 size={25} />
           <p style={{ marginLeft: 5 }}>{productsCount}</p>
