@@ -5,11 +5,21 @@ import Colors from '../../theme/theme.colors'
 describe('Custom Input', () => {
   it('should render with error if hasError is true', () => {
     const { getByPlaceholderText } = render(
-      <CustomInput placeholder="lorem ipsum" hasError={true}></CustomInput>
+      <CustomInput placeholder="lorem ipsum" hasError={true} />
     )
 
     const input = getByPlaceholderText('lorem ipsum')
 
     expect(input).toHaveStyle({ border: `2px solid ${Colors.error}` })
+  })
+
+  it('should render without error if  hasError is false', () => {
+    const { getByPlaceholderText } = render(
+      <CustomInput placeholder="lorem ipsum" hasError={false} />
+    )
+
+    const input = getByPlaceholderText('lorem ipsum')
+
+    expect(input).toHaveStyle({ border: 'none' })
   })
 })
